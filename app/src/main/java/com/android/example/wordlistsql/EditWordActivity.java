@@ -25,9 +25,6 @@ import android.view.View;
 import android.widget.EditText;
 
 
-/**
- * Activity to edit an existing or create a new word.
- */
 public class EditWordActivity extends AppCompatActivity {
 
     private static final String TAG = EditWordActivity.class.getSimpleName();
@@ -37,7 +34,6 @@ public class EditWordActivity extends AppCompatActivity {
 
     private EditText mEditWordView;
 
-    // Unique tag for the intent reply.
     public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
 
     int mId = MainActivity.WORD_ADD;
@@ -49,10 +45,8 @@ public class EditWordActivity extends AppCompatActivity {
 
         mEditWordView = (EditText) findViewById(R.id.edit_word);
 
-        // Get data sent from calling activity.
         Bundle extras = getIntent().getExtras();
 
-        // If we are passed content, fill it in for the user to edit.
         if (extras != null) {
             int id = extras.getInt(WordListAdapter.EXTRA_ID, NO_ID);
             String word = extras.getString(WordListAdapter.EXTRA_WORD, NO_WORD);
@@ -60,14 +54,9 @@ public class EditWordActivity extends AppCompatActivity {
                 mId = id;
                 mEditWordView.setText(word);
             }
-        } // Otherwise, start with empty fields.
+        }
     }
 
-    /**
-     *  Click handler for the Save button.
-     *  Creates a new intent for the reply, adds the reply message to it as an extra,
-     *  sets the intent result, and closes the activity.
-     */
     public void returnReply(View view) {
         String word = ((EditText) findViewById(R.id.edit_word)).getText().toString();
 

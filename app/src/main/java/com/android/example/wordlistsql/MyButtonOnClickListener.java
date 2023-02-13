@@ -18,9 +18,7 @@ package com.android.example.wordlistsql;
 
 import android.view.View;
 
-/**
- * Instantiated for the Edit and Delete buttons in WordListAdapter.
- */
+
 public class MyButtonOnClickListener implements View.OnClickListener {
     private static final String TAG = View.OnClickListener.class.getSimpleName();
 
@@ -33,6 +31,5 @@ public class MyButtonOnClickListener implements View.OnClickListener {
     }
 
     public void onClick(View v) {
-        // Implemented in WordListAdapter
     }
 }

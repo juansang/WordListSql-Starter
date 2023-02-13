@@ -30,15 +30,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * Implements a simple Adapter for a RecyclerView.
- * Demonstrates how to add a click handler for each item in the ViewHolder.
- */
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
 
-    /**
-     * Custom view holder with a text view and two buttons.
-     */
+
     class WordViewHolder extends RecyclerView.ViewHolder {
         public final TextView wordItemView;
         Button delete_button;
@@ -79,10 +73,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         WordItem current = mDB.query(position);
         holder.wordItemView.setText(current.getWord());
 
-        // Keep a reference to the view holder for the click listener
-        final WordViewHolder h = holder; // needs to be final for use in callback
+        final WordViewHolder h = holder;
 
-        // Attach a click listener to the DELETE button.
         holder.delete_button.setOnClickListener(
                 new MyButtonOnClickListener(current.getId(), null) {
 
@@ -109,7 +101,6 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
                     }
                 });
 
-        // Attach a click listener to the EDIT button.
         holder.edit_button.setOnClickListener(new MyButtonOnClickListener(
                 current.getId(), current.getWord()) {
 
@@ -121,7 +112,6 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
                 intent.putExtra(EXTRA_POSITION, h.getBindingAdapterPosition());
                 intent.putExtra(EXTRA_WORD, word);
 
-                // Start an empty edit activity.
                 ((Activity) mContext).startActivityForResult(intent, MainActivity.WORD_EDIT);
             }
         });

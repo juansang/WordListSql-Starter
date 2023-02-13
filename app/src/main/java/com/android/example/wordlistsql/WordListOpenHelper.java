@@ -15,20 +15,15 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
     public WordListOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
-    // It's a good idea to always define a log tag like this.
     private static final String TAG = WordListOpenHelper.class.getSimpleName();
 
-    // has to be 1 first time or app will crash
     private static final int DATABASE_VERSION = 1;
     private static final String WORD_LIST_TABLE = "word_entries";
     private static final String DATABASE_NAME = "wordlist";
 
-    // Column names...
     public static final String KEY_ID = "_id";
     public static final String KEY_WORD = "word";
 
-    // ... and a string array of columns.
     private static final String[] COLUMNS = { KEY_ID, KEY_WORD };
 
     private static final String WORD_LIST_TABLE_CREATE =
@@ -40,7 +35,6 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
     private SQLiteDatabase mWritableDB;
     private SQLiteDatabase mReadableDB;
 
-    // Create a container for the data.
     ContentValues values = new ContentValues();
 
 
@@ -58,8 +52,6 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
                 "Data model", "ViewHolder","Android Performance",
                 "OnClickListener"};
         for (int i=0; i < words.length; i++) {
-            // Put column/value pairs into the container.
-            // put() overrides existing values.
             values.put(KEY_WORD, words[i]);
             db.insert(WORD_LIST_TABLE, null, values);
         }
@@ -151,5 +143,23 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
             Log.d (TAG, "UPDATE EXCEPTION! " + e.getMessage());
         }
         return mNumberOfRowsUpdated;
+    }
+
+    public Cursor search (String searchString) {
+        String[] columns = new String[]{KEY_WORD};
+        searchString = "%" + searchString + "%";
+        String where = KEY_WORD + " LIKE ?";
+        String[]whereArgs = new String[]{searchString};
+
+        Cursor cursor = null;
+
+        try {
+            if (mReadableDB == null) {mReadableDB = getReadableDatabase();}
+            cursor = mReadableDB.query(WORD_LIST_TABLE, columns, where, whereArgs, null, null, null);
+        } catch (Exception e) {
+            Log.d(TAG, "SEARCH EXCEPTION! " + e);
+        }
+
+        return cursor;
     }
 }
