@@ -37,27 +37,38 @@ public class SearchActivity extends AppCompatActivity {
 
     public void showResult(){
         Cursor cursor = mDB.search(word);
-
-        if (cursor != null & cursor.getCount() > 0 & word.length()>0) {
-            mTextView.setText("Result for " + word + ":\n\n");
-            cursor.moveToFirst();
-            int index;
-            String result;
-            do {
-                index = cursor.getColumnIndex(WordListOpenHelper.KEY_WORD);
-                result = cursor.getString(index);
-                mTextView.append(result + "\n");
-            } while (cursor.moveToNext());
-            cursor.close();
+        if(word.length()>0 && word.matches("[a-zA-Z]+")){
+            if (cursor != null & cursor.getCount() >0) {
+                mTextView.setText("Result for " + word + ":\n\n");
+                cursor.moveToFirst();
+                int index;
+                String result;
+                do {
+                    index = cursor.getColumnIndex(WordListOpenHelper.KEY_WORD);
+                    result = cursor.getString(index);
+                    mTextView.append(result + "\n");
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+            else{
+                mTextView.setText("No results for " + word);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
+                builder.setTitle("Alert");
+                builder.setMessage("NO RESULTS FOR " + word.toUpperCase(Locale.ROOT));
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
         else{
             mTextView.setText("No results for " + word);
             AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
             builder.setTitle("Alert");
-            builder.setMessage("NO RESULTS FOR " + word.toUpperCase(Locale.ROOT));
+            builder.setMessage("WRONG WORD FORMAT");
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+
+
     }
 
     @Override
